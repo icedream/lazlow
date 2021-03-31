@@ -1,0 +1,12 @@
+# Binaries
+/lazlow
+*.exe
+*.dll
+*.so
+
+# Images
+*.png
+*.gif
+*.webp
+*.ttf
+*.otf
