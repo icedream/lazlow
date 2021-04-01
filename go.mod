@@ -1,4 +1,4 @@
-module github.com/icedream/shakey
+module github.com/icedream/lazlow
 
 go 1.16
 
