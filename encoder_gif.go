@@ -1,11 +1,11 @@
-package main
+package lazlow
 
 import (
 	"image"
 	"image/color/palette"
 	"image/draw"
 	"image/gif"
-	"time"
+	"strings"
 
 	"github.com/esimov/colorquant"
 )
@@ -34,17 +34,24 @@ func quantify(src image.Image, numColors int) (dst *image.Paletted, quant image.
 type gifEncoder struct {
 }
 
-func (encoder *gifEncoder) Encode(frames []frame, out *output) (err error) {
+func (encoder *gifEncoder) SupportsFileExtension(ext string) bool {
+	return strings.EqualFold(ext, ".gif")
+}
+
+func (encoder *gifEncoder) SupportsFrames(frameCount int) bool {
+	return frameCount > 0
+}
+
+func (encoder *gifEncoder) Options() map[string]LazlowOption {
+	return map[string]LazlowOption{}
+}
+
+func (encoder *gifEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
 	quantizedImage, _ := quantify(frames[0].Image, 256)
 
 	var images []*image.Paletted
 	var delays []int
 	var disposal []byte
-
-	// Add initial frame (always unshaken for preview purposes)
-	images = append(images, quantizedImage)
-	delays = append(delays, int(*flagDelay/(10*time.Millisecond))+1)
-	disposal = append(disposal, gif.DisposalBackground)
 
 	// Create shaken frames
 	for _, frame := range frames {
@@ -82,4 +89,8 @@ func (encoder *gifEncoder) Encode(frames []frame, out *output) (err error) {
 		},
 	})
 	return
+}
+
+func init() {
+	RegisterEncoder("gif", new(gifEncoder))
 }

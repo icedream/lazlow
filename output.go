@@ -1,20 +1,20 @@
-package main
+package lazlow
 
 import (
 	"fmt"
 	"os"
 )
 
-type output struct {
+type LazlowOutput struct {
 	filePath     string
 	writtenFiles []string
 }
 
-func newOutput(filePath string) *output {
-	return &output{filePath: filePath}
+func NewLazlowOutput(filePath string) *LazlowOutput {
+	return &LazlowOutput{filePath: filePath}
 }
 
-func (out *output) CreateFile(outputParameters ...interface{}) (f *os.File, err error) {
+func (out *LazlowOutput) CreateFile(outputParameters ...interface{}) (f *os.File, err error) {
 	outputPath := fmt.Sprintf(out.filePath) // TODO - check parameter count vs. placeholders in output file path
 	f, err = os.Create(outputPath)
 	if err == nil {
@@ -23,7 +23,7 @@ func (out *output) CreateFile(outputParameters ...interface{}) (f *os.File, err 
 	return
 }
 
-func (out *output) WrittenFiles() (info []os.FileInfo, err error) {
+func (out *LazlowOutput) WrittenFiles() (info []os.FileInfo, err error) {
 	info = make([]os.FileInfo, len(out.writtenFiles))
 	for i, filePath := range out.writtenFiles {
 		var s os.FileInfo

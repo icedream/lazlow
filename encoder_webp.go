@@ -1,19 +1,34 @@
-package main
+package lazlow
 
 import (
+	"strings"
 	"time"
 
 	"github.com/sizeofint/webpanimation"
 )
 
-var (
-	flagWebPLossless = cli.Flag("webp-lossless", "Enable lossless output for WebP").Default("false").Bool()
+const (
+	lazlowWebPEncoderOptionLossless = "lossless"
 )
 
 type webpEncoder struct {
 }
 
-func (encoder *webpEncoder) Encode(frames []frame, out *output) (err error) {
+func (encoder *webpEncoder) Options() map[string]LazlowOption {
+	return map[string]LazlowOption{
+		"lossless": NewLazlowBoolOption("Lossless", "Enable lossless output", false),
+	}
+}
+
+func (encoder *webpEncoder) SupportsFileExtension(ext string) bool {
+	return strings.EqualFold(ext, ".webp") || strings.EqualFold(ext, ".webm")
+}
+
+func (encoder *webpEncoder) SupportsFrames(frameCount int) bool {
+	return frameCount > 0
+}
+
+func (encoder *webpEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
 	// Create animated WebP out of generated frames
 	webpanim := webpanimation.NewWebpAnimation(
 		frames[0].Image.Bounds().Dx(),
@@ -24,14 +39,17 @@ func (encoder *webpEncoder) Encode(frames []frame, out *output) (err error) {
 	defer webpanim.ReleaseMemory()
 
 	webpConfig := webpanimation.NewWebpConfig()
-	if *flagWebPLossless {
+	if options[lazlowWebPEncoderOptionLossless].(*LazlowBoolOption).TypedValue() {
 		webpConfig.SetLossless(1)
 	}
 
-	for i, frame := range frames {
+	var currentDuration time.Duration
+
+	for _, frame := range frames {
+		currentDuration += frame.Delay
 		webpanim.AddFrame(
 			frame.Image,
-			int((*flagDelay * time.Duration(i)).Milliseconds()),
+			int(currentDuration.Milliseconds()),
 			webpConfig)
 	}
 
@@ -44,4 +62,8 @@ func (encoder *webpEncoder) Encode(frames []frame, out *output) (err error) {
 
 	err = webpanim.Encode(outputFile)
 	return
+}
+
+func init() {
+	RegisterEncoder("webp", new(webpEncoder))
 }

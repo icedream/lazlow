@@ -1,21 +1,18 @@
-package main
+package lazlow
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
 	"os"
-	"strconv"
 
 	"github.com/llgcode/draw2d/draw2dimg"
 	"github.com/llgcode/draw2d/draw2dkit"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
-)
-
-var (
-	flagDiscordPingNumber = cli.Flag("discord-ping-number", "What number of pings to display").Default("1").Int()
 )
 
 var (
@@ -32,14 +29,29 @@ const (
 	discordRoundedBadgeBorderRadiusY float64 = discordRoundedBadgeBorderRadiusX
 )
 
-type discordPingEffect struct {
+const (
+	lazlowDiscordPingEffectOptionNumber = "number"
+)
+
+type LazlowDiscordPingEffect struct {
 }
 
-func (effect *discordPingEffect) Process(inputImage image.Image) (images []frame) {
-	images = make([]frame, 1)
+func (effect *LazlowDiscordPingEffect) Options() map[string]LazlowOption {
+	return map[string]LazlowOption{
+		lazlowDiscordPingEffectOptionNumber: NewLazlowEncoderIntegerOption("Ping number", "What the red counter at the bottom right should display", 1, math.MinInt64, math.MaxInt64, 1),
+	}
+}
+
+func (effect *LazlowDiscordPingEffect) IsAnimated() bool {
+	return false
+}
+
+func (effect *LazlowDiscordPingEffect) Process(inputImage image.Image, options map[string]LazlowOption) (images []LazlowFrame) {
+	images = make([]LazlowFrame, 1)
+
+	inputNumber := options[lazlowDiscordPingEffectOptionNumber]
 
 	/*
-
 		Rounded corner for badge and mask: rx = 12, ry = 12
 
 		Widths for discord digits:
@@ -62,7 +74,7 @@ func (effect *discordPingEffect) Process(inputImage image.Image) (images []frame
 	imagePosX := (size - inputWidth) / 2
 	imagePosY := (size - inputHeight) / 2
 
-	discordRoundedBadgeText := strconv.Itoa(*flagDiscordPingNumber)
+	discordRoundedBadgeText := fmt.Sprintf("%d", inputNumber.(*LazlowIntegerOption).TypedValue())
 	discordRoundedBadgeWidth := scale * (discordRoundedBadgeMinWidth + (float64(len(discordRoundedBadgeText)) * discordRoundedBadgeDigitWidth))
 	discordRoundedBadgeX := imagePosX + inputWidth - discordRoundedBadgeWidth
 	discordRoundedBadgeY := imagePosY + inputHeight - (scale * discordRoundedBadgeHeight)
@@ -161,9 +173,13 @@ func (effect *discordPingEffect) Process(inputImage image.Image) (images []frame
 	}
 	d.DrawString(discordRoundedBadgeText)
 
-	images[0] = frame{
+	images[0] = LazlowFrame{
 		Image: dest,
 	}
 
 	return
+}
+
+func init() {
+	RegisterEffect("discord-ping", new(LazlowDiscordPingEffect))
 }

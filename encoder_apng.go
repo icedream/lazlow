@@ -1,6 +1,7 @@
-package main
+package lazlow
 
 import (
+	"strings"
 	"time"
 
 	"github.com/kettek/apng"
@@ -9,7 +10,19 @@ import (
 type apngEncoder struct {
 }
 
-func (encoder *apngEncoder) Encode(frames []frame, out *output) (err error) {
+func (encoder *apngEncoder) SupportsFileExtension(ext string) bool {
+	return strings.EqualFold(ext, ".png")
+}
+
+func (encoder *apngEncoder) SupportsFrames(frameCount int) bool {
+	return frameCount > 0
+}
+
+func (encoder *apngEncoder) Options() map[string]LazlowOption {
+	return map[string]LazlowOption{}
+}
+
+func (encoder *apngEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
 	a := apng.APNG{
 		Frames: make([]apng.Frame, len(frames)),
 	}
@@ -33,4 +46,8 @@ func (encoder *apngEncoder) Encode(frames []frame, out *output) (err error) {
 	}
 
 	return
+}
+
+func init() {
+	RegisterEncoder("apng", new(apngEncoder))
 }

@@ -1,17 +1,35 @@
-package main
+package lazlow
 
 import (
 	"image/jpeg"
+	"strings"
 )
 
-var flagJPEGQuality = cli.Flag("jpeg-quality", "The quality with which JPEG files will be written").Default("90").Int()
+const (
+	lazlowJPEGEncoderOptionQuality = "quality"
+)
 
 type jpegEncoder struct {
 }
 
-func (encoder *jpegEncoder) Encode(frames []frame, out *output) (err error) {
-	if len(frames) != 1 {
-		err = errOnlySingleFrameOutputSupported
+func (encoder *jpegEncoder) SupportsFrames(frameCount int) bool {
+	return frameCount == 1
+}
+
+func (encoder *jpegEncoder) SupportsFileExtension(ext string) bool {
+	return strings.EqualFold(ext, ".jpg") || strings.EqualFold(ext, ".jpeg")
+}
+
+func (encoder *jpegEncoder) Options() map[string]LazlowOption {
+	return map[string]LazlowOption{
+		lazlowJPEGEncoderOptionQuality: NewLazlowEncoderIntegerOption("JPEG quality level", "The quality level with which JPEG output will be written, where 100 = lossless and lower will be increasingly lossy.", 90, 0, 100, 1),
+	}
+}
+
+func (encoder *jpegEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
+	// TODO - just a safety check that can be removed later once the plugin framework does the check itself
+	if !encoder.SupportsFrames(len(frames)) {
+		err = ErrOnlySingleFrameOutputSupported
 		return
 	}
 
@@ -22,11 +40,15 @@ func (encoder *jpegEncoder) Encode(frames []frame, out *output) (err error) {
 	defer f.Close()
 
 	err = jpeg.Encode(f, frames[0].Image, &jpeg.Options{
-		Quality: *flagJPEGQuality,
+		Quality: int(options[lazlowJPEGEncoderOptionQuality].(*LazlowIntegerOption).TypedValue()),
 	})
 	if err != nil {
 		return
 	}
 
 	return
+}
+
+func init() {
+	RegisterEncoder("jpeg", new(jpegEncoder))
 }
