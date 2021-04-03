@@ -2,10 +2,11 @@ package lazlow
 
 import (
 	"image"
-	"image/color/palette"
+	"image/color"
 	"image/draw"
 	"image/gif"
 	"strings"
+	"time"
 
 	"github.com/esimov/colorquant"
 )
@@ -18,14 +19,14 @@ var dither = colorquant.Dither{
 	},
 }
 
-func quantify(src image.Image, numColors int) (dst *image.Paletted, quant image.Image) {
+func quantify(src image.Image, palette color.Palette) (dst *image.Paletted) {
 	dst = image.NewPaletted(
 		image.Rect(0, 0, src.Bounds().Dx(), src.Bounds().Dy()),
-		palette.Plan9)
+		palette)
 	// if noDither {
-	// 	quant = colorquant.NoDither.Quantize(src, dst, numColors, false, true)
+	// 	colorquant.NoDither.Quantize(src, dst, numColors, false, false)
 	// } else {
-	quant = dither.Quantize(src, dst, len(dst.Palette), true, true)
+	dither.Quantize(src, dst, 0 /*unused*/, true, false)
 	// }
 
 	return
@@ -47,14 +48,39 @@ func (encoder *gifEncoder) Options() map[string]LazlowOption {
 }
 
 func (encoder *gifEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
-	quantizedImage, _ := quantify(frames[0].Image, 256)
-
 	var images []*image.Paletted
 	var delays []int
 	var disposal []byte
 
+	// Create color model/palette for all frames
+	var totalWidth int
+	var totalHeight int
+	for _, frame := range frames {
+		totalWidth += frame.Image.Bounds().Dx()
+		if frame.Image.Bounds().Dy() > totalHeight {
+			totalHeight = frame.Image.Bounds().Dy()
+		}
+	}
+	colorPaletteSrc := image.NewRGBA(image.Rect(0, 0, totalWidth, totalHeight))
+	colorPaletteX := 0
+	for _, frame := range frames {
+		draw.Draw(colorPaletteSrc,
+			frame.Image.Bounds(),
+			frame.Image,
+			image.Point{colorPaletteX, 0},
+			draw.Src)
+	}
+	// NOTE - we reserve one color out of the 256 for transparency
+	// TODO - allow multiple transparency levels
+	colorPaletteImg := colorquant.Quant{}.Quantize(colorPaletteSrc, 255)
+	palette := color.Palette{
+		color.Transparent,
+	}
+	palette = append(palette, colorPaletteImg.(*image.Paletted).Palette...)
+
 	// Create shaken frames
 	for _, frame := range frames {
+		quantizedImage := quantify(frame.Image, palette)
 		img := image.NewPaletted(
 			image.Rect(
 				0,
@@ -62,12 +88,12 @@ func (encoder *gifEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, optio
 				frame.Image.Bounds().Dx(),
 				frame.Image.Bounds().Dy()),
 			quantizedImage.Palette)
-		draw.Draw(img, frame.Image.Bounds(), frame.Image, image.Point{0, 0}, draw.Src)
+		draw.Draw(img, quantizedImage.Bounds(), quantizedImage, image.Point{0, 0}, draw.Src)
 
 		// images = append(images, img)
 		images = append(images, img)
-		delays = append(delays, delays[0])
-		disposal = append(disposal, disposal[0])
+		delays = append(delays, int(frame.Delay/(10*time.Millisecond)))
+		disposal = append(disposal, gif.DisposalBackground)
 	}
 
 	// Create output file
