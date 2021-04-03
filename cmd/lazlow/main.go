@@ -28,6 +28,8 @@ var (
 	flagEncoder = cli.Flag("output-type", "Output file type").Short('t').Default("auto").Enum(append([]string{"auto"}, lazlow.GetRegisteredEncoderIDs()...)...)
 )
 
+var Version = "dev"
+
 func detectOutputType(effect lazlow.LazlowEffect, ext string) string {
 	encoderID := lazlow.DetectOutputType(effect, ext)
 	if len(encoderID) < 1 {
@@ -73,6 +75,11 @@ func registerDynamicOptions(prefix string, options map[string]lazlow.LazlowOptio
 }
 
 func main() {
+	fmt.Printf("LazLow %s", Version)
+	fmt.Println("\tby Carl Kittelberger <icedream@icedream.pw>")
+	fmt.Println("\thttps://github.com/icedream/lazlow")
+	fmt.Println()
+
 	// register flags for the effect options
 	effectOptions := map[string]map[string]lazlow.LazlowOption{}
 	for effectName, effect := range lazlow.GetRegisteredEffects() {
