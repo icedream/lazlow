@@ -75,7 +75,7 @@ func registerDynamicOptions(prefix string, options map[string]lazlow.LazlowOptio
 }
 
 func main() {
-	fmt.Printf("LazLow %s", Version)
+	fmt.Printf("LazLow %s\n", Version)
 	fmt.Println("\tby Carl Kittelberger <icedream@icedream.pw>")
 	fmt.Println("\thttps://github.com/icedream/lazlow")
 	fmt.Println()
