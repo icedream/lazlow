@@ -6,9 +6,11 @@ require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/alecthomas/units v0.0.0-20210208195552-ff826a37aa15 // indirect
 	github.com/dustin/go-humanize v1.0.0
+	github.com/esimov/caire v1.2.6 // indirect
 	github.com/esimov/colorquant v1.0.0
 	github.com/kettek/apng v0.0.0-20191108220231-414630eed80f
 	github.com/llgcode/draw2d v0.0.0-20210313082411-577c1ead272a
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/nicksnyder/go-i18n v1.10.1 // indirect
 	github.com/sizeofint/webpanimation v0.0.0-20210224203943-b413f9843fe3
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb
