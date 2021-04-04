@@ -36,7 +36,7 @@ func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, o
 	frameCount := int(options[lazlowContentAwareScalingEffectOptionFrames].(*LazlowIntegerOption).TypedValue())
 	pixelDelta := int(options[lazlowContentAwareScalingEffectOptionStep].(*LazlowIntegerOption).TypedValue())
 
-	images = make([]LazlowFrame, frameCount)
+	images = make([]LazlowFrame, 1)
 
 	// Add initial frame (always unprocessed for preview purposes)
 	images[0] = LazlowFrame{inputImage, delay}
@@ -84,7 +84,7 @@ func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, o
 			uint(inputImage.Bounds().Dy()),
 			casOutputImg, resize.Lanczos3)
 
-		images[i] = LazlowFrame{img, delay}
+		images = append(images, LazlowFrame{img, delay})
 	}
 
 	return
