@@ -7,6 +7,8 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"path/filepath"
+	"strconv"
+	"time"
 
 	// TODO - webp input support since Discord now uses that for a few static images…?
 
@@ -54,17 +56,40 @@ func getEncoder(effect lazlow.LazlowEffect, ext string) (string, lazlow.LazlowEn
 
 func registerDynamicOption(prefix string, name string, option lazlow.LazlowOption) {
 	fl := cli.Flag(prefix+"-"+name, option.Description()).
-		Default(fmt.Sprint(option.DefaultValue())).
-		Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) error {
-			return option.SetValue(element.Value)
-		})
+		Default(fmt.Sprint(option.DefaultValue()))
 	switch option.(type) {
 	case *lazlow.LazlowBoolOption:
-		fl.Bool()
+		fl.
+			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
+				v, err := strconv.ParseBool(*element.Value)
+				if err != nil {
+					return
+				}
+				return option.SetValue(v)
+			}).
+			Bool()
 	case *lazlow.LazlowDurationOption:
-		fl.Duration()
+		fl.
+			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
+				v, err := time.ParseDuration(*element.Value)
+				if err != nil {
+					return
+				}
+				return option.SetValue(time.Duration(v))
+			}).
+			Duration()
 	case *lazlow.LazlowIntegerOption:
-		fl.Int64()
+		fl.
+			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
+				v, err := strconv.ParseInt(*element.Value, 10, 64)
+				if err != nil {
+					return
+				}
+				return option.SetValue(v)
+			}).
+			Int64()
+	default:
+		panic(fmt.Sprintf("unknown type for option %s-%s, %+v", prefix, name, option))
 	}
 }
 
