@@ -5,6 +5,7 @@ This tool is made to let you easily modify or animate images with preprogrammed 
 Currently supported effects:
 
 - Animated violent image shaking
+- Content aware scaling
 - Discord ping count overlay
 
 Currently supported output formats:
@@ -65,6 +66,10 @@ Put a discord ping counter on an image:
 Above, but with the counter saying 1337 instead of just 1:
 
     lazlow discord-ping yourimage.png yourimage_ping.png --discord-ping-number=1337
+
+Content Aware Scaling:
+
+    lazlow cas yourimage.png yourimage_cas.gif
 
 ## Known issues
 
