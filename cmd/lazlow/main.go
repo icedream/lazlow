@@ -17,13 +17,14 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/icedream/lazlow"
+	"github.com/icedream/lazlow/effects"
 	"gopkg.in/alecthomas/kingpin.v3-unstable"
 )
 
 var (
 	cli = kingpin.New("lazlow", "Lazy, low-effort meme generator tool")
 
-	argEffect     = cli.Arg("effect", "Effect to use").Required().Enum(lazlow.GetRegisteredEffectIDs()...)
+	argEffect     = cli.Arg("effect", "Effect to use").Required().Enum(effects.GetRegisteredEffectIDs()...)
 	argInputFile  = cli.Arg("input-file", "Input file name").Required().ExistingFile()
 	argOutputFile = cli.Arg("output-file", "Output file name").Required().String()
 
@@ -32,7 +33,7 @@ var (
 
 var Version = "dev"
 
-func detectOutputType(effect lazlow.LazlowEffect, ext string) string {
+func detectOutputType(effect effects.LazlowEffect, ext string) string {
 	encoderID := lazlow.DetectOutputType(effect, ext)
 	if len(encoderID) < 1 {
 		log.Fatalf("Can't automatically detect output file type for path: %s", *argOutputFile)
@@ -40,7 +41,7 @@ func detectOutputType(effect lazlow.LazlowEffect, ext string) string {
 	return encoderID
 }
 
-func getEncoder(effect lazlow.LazlowEffect, ext string) (string, lazlow.LazlowEncoder) {
+func getEncoder(effect effects.LazlowEffect, ext string) (string, lazlow.LazlowEncoder) {
 	encoderID := *flagEncoder
 	if *flagEncoder == "auto" {
 		encoderID = detectOutputType(effect, ext)
@@ -54,11 +55,11 @@ func getEncoder(effect lazlow.LazlowEffect, ext string) (string, lazlow.LazlowEn
 	return encoderID, encoder
 }
 
-func registerDynamicOption(prefix string, name string, option lazlow.LazlowOption) {
+func registerDynamicOption(prefix string, name string, option effects.LazlowOption) {
 	fl := cli.Flag(prefix+"-"+name, option.Description()).
 		Default(fmt.Sprint(option.DefaultValue()))
 	switch option.(type) {
-	case *lazlow.LazlowBoolOption:
+	case *effects.LazlowBoolOption:
 		fl.
 			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
 				v, err := strconv.ParseBool(*element.Value)
@@ -68,7 +69,7 @@ func registerDynamicOption(prefix string, name string, option lazlow.LazlowOptio
 				return option.SetValue(v)
 			}).
 			Bool()
-	case *lazlow.LazlowDurationOption:
+	case *effects.LazlowDurationOption:
 		fl.
 			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
 				v, err := time.ParseDuration(*element.Value)
@@ -78,7 +79,7 @@ func registerDynamicOption(prefix string, name string, option lazlow.LazlowOptio
 				return option.SetValue(time.Duration(v))
 			}).
 			Duration()
-	case *lazlow.LazlowIntegerOption:
+	case *effects.LazlowIntegerOption:
 		fl.
 			Action(func(element *kingpin.ParseElement, context *kingpin.ParseContext) (err error) {
 				v, err := strconv.ParseInt(*element.Value, 10, 64)
@@ -93,7 +94,7 @@ func registerDynamicOption(prefix string, name string, option lazlow.LazlowOptio
 	}
 }
 
-func registerDynamicOptions(prefix string, options map[string]lazlow.LazlowOption) {
+func registerDynamicOptions(prefix string, options map[string]effects.LazlowOption) {
 	for name, option := range options {
 		registerDynamicOption(prefix, name, option)
 	}
@@ -106,13 +107,13 @@ func main() {
 	fmt.Println()
 
 	// register flags for the effect options
-	effectOptions := map[string]map[string]lazlow.LazlowOption{}
-	for effectName, effect := range lazlow.GetRegisteredEffects() {
+	effectOptions := map[string]map[string]effects.LazlowOption{}
+	for effectName, effect := range effects.GetRegisteredEffects() {
 		effectOptions[effectName] = effect.Options()
 		registerDynamicOptions(effectName, effectOptions[effectName])
 	}
 	// register flags for the encoder options
-	encoderOptions := map[string]map[string]lazlow.LazlowOption{}
+	encoderOptions := map[string]map[string]effects.LazlowOption{}
 	for encoderName, encoder := range lazlow.GetRegisteredEncoders() {
 		encoderOptions[encoderName] = encoder.Options()
 		registerDynamicOptions(encoderName, encoderOptions[encoderName])
@@ -120,7 +121,7 @@ func main() {
 	kingpin.MustParse(cli.Parse(os.Args[1:]))
 
 	// get effect
-	effect, ok := lazlow.GetEffect(*argEffect)
+	effect, ok := effects.GetEffect(*argEffect)
 	if !ok {
 		log.Fatalf("Could not find effect named %s", *argEffect)
 	}

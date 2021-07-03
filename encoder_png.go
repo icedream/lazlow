@@ -3,13 +3,15 @@ package lazlow
 import (
 	"image/png"
 	"strings"
+
+	"github.com/icedream/lazlow/effects"
 )
 
 type pngEncoder struct {
 }
 
-func (encoder *pngEncoder) Options() map[string]LazlowOption {
-	return map[string]LazlowOption{}
+func (encoder *pngEncoder) Options() map[string]effects.LazlowOption {
+	return map[string]effects.LazlowOption{}
 }
 
 func (encoder *pngEncoder) SupportsFileExtension(ext string) bool {
@@ -20,7 +22,7 @@ func (encoder *pngEncoder) SupportsFrames(frameCount int) bool {
 	return frameCount == 1
 }
 
-func (encoder *pngEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
+func (encoder *pngEncoder) Encode(frames []effects.LazlowFrame, out *LazlowOutput, options map[string]effects.LazlowOption) (err error) {
 	// TODO - just a safety check that can be removed later once the plugin framework does the check itself
 	if !encoder.SupportsFrames(len(frames)) {
 		err = ErrOnlySingleFrameOutputSupported

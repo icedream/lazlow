@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/icedream/lazlow/effects"
 	"github.com/sizeofint/webpanimation"
 )
 
@@ -14,9 +15,9 @@ const (
 type webpEncoder struct {
 }
 
-func (encoder *webpEncoder) Options() map[string]LazlowOption {
-	return map[string]LazlowOption{
-		"lossless": NewLazlowBoolOption("Lossless", "Enable lossless output", false),
+func (encoder *webpEncoder) Options() map[string]effects.LazlowOption {
+	return map[string]effects.LazlowOption{
+		"lossless": effects.NewLazlowBoolOption("Lossless", "Enable lossless output", false),
 	}
 }
 
@@ -28,7 +29,7 @@ func (encoder *webpEncoder) SupportsFrames(frameCount int) bool {
 	return frameCount > 0
 }
 
-func (encoder *webpEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
+func (encoder *webpEncoder) Encode(frames []effects.LazlowFrame, out *LazlowOutput, options map[string]effects.LazlowOption) (err error) {
 	// Create animated WebP out of generated frames
 	webpanim := webpanimation.NewWebpAnimation(
 		frames[0].Image.Bounds().Dx(),
@@ -39,7 +40,7 @@ func (encoder *webpEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, opti
 	defer webpanim.ReleaseMemory()
 
 	webpConfig := webpanimation.NewWebpConfig()
-	if options[lazlowWebPEncoderOptionLossless].(*LazlowBoolOption).TypedValue() {
+	if options[lazlowWebPEncoderOptionLossless].(*effects.LazlowBoolOption).TypedValue() {
 		webpConfig.SetLossless(1)
 	}
 

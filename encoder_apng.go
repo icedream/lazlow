@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/icedream/lazlow/effects"
 	"github.com/kettek/apng"
 )
 
@@ -18,11 +19,11 @@ func (encoder *apngEncoder) SupportsFrames(frameCount int) bool {
 	return frameCount > 0
 }
 
-func (encoder *apngEncoder) Options() map[string]LazlowOption {
-	return map[string]LazlowOption{}
+func (encoder *apngEncoder) Options() map[string]effects.LazlowOption {
+	return map[string]effects.LazlowOption{}
 }
 
-func (encoder *apngEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
+func (encoder *apngEncoder) Encode(frames []effects.LazlowFrame, out *LazlowOutput, options map[string]effects.LazlowOption) (err error) {
 	a := apng.APNG{
 		Frames: make([]apng.Frame, len(frames)),
 	}

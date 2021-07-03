@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/esimov/colorquant"
+	"github.com/icedream/lazlow/effects"
 )
 
 var dither = colorquant.Dither{
@@ -43,11 +44,11 @@ func (encoder *gifEncoder) SupportsFrames(frameCount int) bool {
 	return frameCount > 0
 }
 
-func (encoder *gifEncoder) Options() map[string]LazlowOption {
-	return map[string]LazlowOption{}
+func (encoder *gifEncoder) Options() map[string]effects.LazlowOption {
+	return map[string]effects.LazlowOption{}
 }
 
-func (encoder *gifEncoder) Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error) {
+func (encoder *gifEncoder) Encode(frames []effects.LazlowFrame, out *LazlowOutput, options map[string]effects.LazlowOption) (err error) {
 	var images []*image.Paletted
 	var delays []int
 	var disposal []byte

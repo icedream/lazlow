@@ -1,4 +1,4 @@
-package lazlow
+package effects
 
 type LazlowIntegerOption struct {
 	humanFriendlyName string

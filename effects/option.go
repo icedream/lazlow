@@ -1,4 +1,4 @@
-package lazlow
+package effects
 
 type LazlowOption interface {
 	HumanFriendlyName() string

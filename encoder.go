@@ -2,15 +2,17 @@ package lazlow
 
 import (
 	"errors"
+
+	"github.com/icedream/lazlow/effects"
 )
 
 var ErrOnlySingleFrameOutputSupported = errors.New("this encoder only supports single-frame output")
 
 type LazlowEncoder interface {
-	Options() map[string]LazlowOption
+	Options() map[string]effects.LazlowOption
 	SupportsFileExtension(ext string) bool
 	SupportsFrames(frameCount int) bool
-	Encode(frames []LazlowFrame, out *LazlowOutput, options map[string]LazlowOption) (err error)
+	Encode(frames []effects.LazlowFrame, out *LazlowOutput, options map[string]effects.LazlowOption) (err error)
 }
 
 var registeredEncoders = map[string]LazlowEncoder{}
@@ -41,7 +43,7 @@ func GetRegisteredEncoders() (retval map[string]LazlowEncoder) {
 	return registeredEncoders
 }
 
-func DetectOutputType(effect LazlowEffect, ext string) (encoderID string) {
+func DetectOutputType(effect effects.LazlowEffect, ext string) (encoderID string) {
 	// TODO - locking
 	var encoder LazlowEncoder
 	for currentEncoderID, currentEncoder := range registeredEncoders {
