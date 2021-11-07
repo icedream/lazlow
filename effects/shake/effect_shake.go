@@ -30,7 +30,7 @@ func (effect *LazlowShakeEffect) Options() map[string]effects.LazlowOption {
 	}
 }
 
-func (effect *LazlowShakeEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame) {
+func (effect *LazlowShakeEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame, err error) {
 	delay := options[lazlowShakeEffectOptionDelay].(*effects.LazlowDurationOption).TypedValue()
 	frameCount := int(options[lazlowShakeEffectOptionFrames].(*effects.LazlowIntegerOption).TypedValue())
 	shakeAmount := float64(options[lazlowShakeEffectOptionPercentage].(*effects.LazlowIntegerOption).TypedValue()) / 100

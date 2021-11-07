@@ -142,7 +142,11 @@ func main() {
 
 	out := lazlow.NewLazlowOutput(*argOutputFile)
 
-	frames := effect.Process(inputImage, effectOpts)
+	frames, err := effect.Process(inputImage, effectOpts)
+	if err != nil {
+		log.Fatal("Failed to process image:", err)
+		return
+	}
 
 	encoderID, encoder := getEncoder(effect, filepath.Ext(*argOutputFile))
 	if encoder == nil {

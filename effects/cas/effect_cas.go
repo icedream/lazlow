@@ -27,12 +27,12 @@ func (effect *LazlowContentAwareScalingEffect) IsAnimated() bool {
 func (effect *LazlowContentAwareScalingEffect) Options() map[string]effects.LazlowOption {
 	return map[string]effects.LazlowOption{
 		lazlowContentAwareScalingEffectOptionDelay:  effects.NewLazlowEncoderDurationOption("Frame delay", "Delay between frames", 40*time.Millisecond, 0, 0xff*10*time.Millisecond, 10*time.Millisecond),
-		lazlowContentAwareScalingEffectOptionFrames: effects.NewLazlowEncoderDurationOption("Frame count", "How many frames to generate", 15*2, 0, 0xff, 1),
-		lazlowContentAwareScalingEffectOptionStep:   effects.NewLazlowEncoderDurationOption("Pixel delta step", "By how many pixels to scale with each frame", 4, 0, 0xffff, 1),
+		lazlowContentAwareScalingEffectOptionFrames: effects.NewLazlowEncoderIntegerOption("Frame count", "How many frames to generate", 15*2, 0, 0xff, 1),
+		lazlowContentAwareScalingEffectOptionStep:   effects.NewLazlowEncoderIntegerOption("Pixel delta step", "By how many pixels to scale with each frame", 4, 0, 0xffff, 1),
 	}
 }
 
-func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame) {
+func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame, err error) {
 	delay := options[lazlowContentAwareScalingEffectOptionDelay].(*effects.LazlowDurationOption).TypedValue()
 	frameCount := int(options[lazlowContentAwareScalingEffectOptionFrames].(*effects.LazlowIntegerOption).TypedValue())
 	pixelDelta := int(options[lazlowContentAwareScalingEffectOptionStep].(*effects.LazlowIntegerOption).TypedValue())
@@ -66,7 +66,9 @@ func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, o
 		}
 
 		if p.NewHeight == 1 && p.NewWidth == 1 {
-			break // can't shrink further
+			// can't shrink further
+			images = images[0 : i-1]
+			break
 		}
 
 		// Content-aware resizing
@@ -92,7 +94,12 @@ func (effect *LazlowContentAwareScalingEffect) Process(inputImage image.Image, o
 			Image: img,
 			Delay: delay,
 		}
+
+		log.Println("Making frame #", i)
 	}
+
+	log.Println("Expecting to make this many frames:", frameCount)
+	log.Println("Actually made this many frames:", len(images))
 
 	return
 }

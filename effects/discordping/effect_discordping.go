@@ -47,7 +47,7 @@ func (effect *LazlowDiscordPingEffect) IsAnimated() bool {
 	return false
 }
 
-func (effect *LazlowDiscordPingEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame) {
+func (effect *LazlowDiscordPingEffect) Process(inputImage image.Image, options map[string]effects.LazlowOption) (images []effects.LazlowFrame, err error) {
 	images = make([]effects.LazlowFrame, 1)
 
 	inputNumber := options[lazlowDiscordPingEffectOptionNumber]
@@ -104,7 +104,7 @@ func (effect *LazlowDiscordPingEffect) Process(inputImage image.Image, options m
 		Hinting: font.HintingFull,
 	})
 	if err != nil {
-		panic(err)
+		return
 	}
 	defer face.Close()
 	var badgeTextWidth float64 = 0
@@ -174,9 +174,9 @@ func (effect *LazlowDiscordPingEffect) Process(inputImage image.Image, options m
 	}
 	d.DrawString(discordRoundedBadgeText)
 
-	images[0] = effects.LazlowFrame{
-		Image: dest,
-	}
+	images[0].Image = dest
+
+	fmt.Printf("%+v", images)
 
 	return
 }

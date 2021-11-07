@@ -13,7 +13,7 @@ type LazlowFrame struct {
 type LazlowEffect interface {
 	Options() map[string]LazlowOption
 	IsAnimated() bool
-	Process(input image.Image, options map[string]LazlowOption) (output []LazlowFrame)
+	Process(input image.Image, options map[string]LazlowOption) (output []LazlowFrame, err error)
 }
 
 var registeredEffects = map[string]LazlowEffect{}
