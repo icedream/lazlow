@@ -1,6 +1,6 @@
 module github.com/icedream/lazlow
 
-go 1.16
+go 1.19
 
 require (
 	github.com/alecthomas/units v0.0.0-20210927113745-59d0afb8317a // indirect
