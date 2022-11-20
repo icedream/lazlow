@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/alecthomas/units v0.0.0-20210927113745-59d0afb8317a // indirect
 	github.com/dustin/go-humanize v1.0.0
-	github.com/esimov/caire v1.3.3
+	github.com/esimov/caire v1.4.5
 	github.com/esimov/colorquant v1.0.0
 	github.com/esimov/pigo v1.4.5 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
@@ -17,7 +17,7 @@ require (
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
-	golang.org/x/image v0.0.0-20211028202545-6944b10bf410
+	golang.org/x/image v0.0.0-20220722155232-062f8c9fd539
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20191105091915-95d230a53780
 	gopkg.in/yaml.v2 v2.4.0 // indirect
