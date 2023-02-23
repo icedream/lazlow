@@ -18,7 +18,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20191105091915-95d230a53780
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
