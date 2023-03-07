@@ -16,6 +16,6 @@ require (
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
 	golang.org/x/image v0.0.0-20220722155232-062f8c9fd539
-	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20191105091915-95d230a53780
+	gopkg.in/alecthomas/kingpin.v3-unstable 649b5a2df7c0
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
