@@ -3,7 +3,7 @@ module github.com/icedream/lazlow
 go 1.19
 
 require (
-	github.com/dustin/go-humanize v1.0.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/esimov/caire v1.4.5
 	github.com/esimov/colorquant v1.0.0
 	github.com/kettek/apng v0.0.0-20220823221153-ff692776a607

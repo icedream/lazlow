@@ -21,6 +21,8 @@ github.com/disintegration/imaging v1.6.2 h1:w1LecBlG2Lnp8B3jk5zSuNqd7b4DXhcjwek1
 github.com/disintegration/imaging v1.6.2/go.mod h1:44/5580QXChDfwIclfc/PCwrr44amcmDAg8hxG0Ewe4=
 github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
+github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
+github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/esimov/caire v1.4.5 h1:VRvoKGcIhhkV1VE5Gz0p/0J/2MpnG4mievXovImqHEE=
 github.com/esimov/caire v1.4.5/go.mod h1:NfTAiYMbKHYl/BRb7kgUNwipZSwvbOPtycvw3fHHKx4=
 github.com/esimov/colorquant v1.0.0 h1:Au0vgJi9uTftrZxoqKJXGO1im5pny79mJpVYPij3vp0=
