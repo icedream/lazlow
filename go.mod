@@ -9,7 +9,7 @@ require (
 	github.com/esimov/colorquant v1.0.0
 	github.com/esimov/pigo v1.4.5 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
-	github.com/kettek/apng v0.0.0-20191108220231-414630eed80f
+	github.com/kettek/apng v0.0.0-20220823221153-ff692776a607
 	github.com/llgcode/draw2d v0.0.0-20210904075650-80aa0a2a901d
 	github.com/markbates/pkger v0.17.1
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
