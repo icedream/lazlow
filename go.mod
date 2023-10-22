@@ -7,7 +7,7 @@ require (
 	github.com/esimov/caire v1.4.5
 	github.com/esimov/colorquant v1.0.0
 	github.com/kettek/apng v0.0.0-20220823221153-ff692776a607
-	github.com/llgcode/draw2d v0.0.0-20210904075650-80aa0a2a901d
+	github.com/llgcode/draw2d v0.0.0-20231022063514-1acb54133d2a
 	github.com/markbates/pkger v0.17.1
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
