@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/dustin/go-humanize v1.0.1
-	github.com/esimov/caire v1.4.5
+	github.com/esimov/caire v1.4.6
 	github.com/esimov/colorquant v1.0.0
 	github.com/kettek/apng v0.0.0-20220823221153-ff692776a607
 	github.com/llgcode/draw2d v0.0.0-20210904075650-80aa0a2a901d

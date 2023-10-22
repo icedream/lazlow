@@ -25,6 +25,8 @@ github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkp
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/esimov/caire v1.4.5 h1:VRvoKGcIhhkV1VE5Gz0p/0J/2MpnG4mievXovImqHEE=
 github.com/esimov/caire v1.4.5/go.mod h1:NfTAiYMbKHYl/BRb7kgUNwipZSwvbOPtycvw3fHHKx4=
+github.com/esimov/caire v1.4.6 h1:Mys4hQMEkXO5XkgGl9D/lAXjMvAM5yZAW2T/ytGu2mk=
+github.com/esimov/caire v1.4.6/go.mod h1:UL1pA62vPCK0Dsc5X8dOJ9j6zUx7mJJVHPGtlve0RFI=
 github.com/esimov/colorquant v1.0.0 h1:Au0vgJi9uTftrZxoqKJXGO1im5pny79mJpVYPij3vp0=
 github.com/esimov/colorquant v1.0.0/go.mod h1:av7lYasj6eTILlP0s+rmU8POP1rsktNIBEIjjDd+wJk=
 github.com/esimov/pigo v1.4.5 h1:ySG0QqMh02VNALvHnx04L1ScRu66N6XA5vLLga8GiLg=
