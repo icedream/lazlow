@@ -12,7 +12,7 @@ require (
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
 	golang.org/x/image v0.13.0
-	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20191105091915-95d230a53780
+	gopkg.in/alecthomas/kingpin.v3-unstable 141b40d9004d
 )
 
 require (
