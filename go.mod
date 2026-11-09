@@ -1,6 +1,6 @@
 module github.com/icedream/lazlow
 
-go 1.19
+go 1.26.0
 
 require (
 	github.com/dustin/go-humanize v1.0.1
@@ -11,7 +11,7 @@ require (
 	github.com/markbates/pkger v0.17.1
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/sizeofint/webpanimation v0.0.0-20210809145948-1d2b32119882
-	golang.org/x/image v0.13.0
+	golang.org/x/image v0.48.0
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20191105091915-95d230a53780
 )
 
@@ -31,7 +31,7 @@ require (
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/exp/shiny v0.0.0-20220722155223-a9213eeb770e // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.50.0 // indirect
+	golang.org/x/text v0.44.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
